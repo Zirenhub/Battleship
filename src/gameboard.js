@@ -1,10 +1,8 @@
-import Ship from './ship';
+import Ship from './ship.js';
 
 class Gameboard {
-  constructor(s, x, y) {
+  constructor() {
     this.gameboard = this.constructor.createGameboard();
-    this.place = this.placeShip(s, x, y);
-    this.ships = [];
   }
 
   static createGameboard() {
@@ -19,10 +17,30 @@ class Gameboard {
     return board;
   }
 
-  placeShip(s, x, y) {
+  placeShip(s, [x, y], dir) {
     const newShip = new Ship(s);
-    this.ships.push(newShip.shipClass);
+    const direction = dir;
+    let xCoor = x;
+    let yCoor = y;
+    let shipLength = newShip.getLength();
+    console.log(xCoor);
+    console.log(yCoor);
+
+    while (shipLength > 0) {
+      this.gameboard[(xCoor += 1)][yCoor] = newShip.getShipName();
+      shipLength--;
+    }
   }
 }
+
+const gameboard = new Gameboard();
+gameboard.placeShip('Destroyer', [4, 5], 'vertical');
+
+console.log(gameboard);
+console.log(
+  gameboard.gameboard.forEach((element) => {
+    console.log(element);
+  })
+);
 
 export default Gameboard;
