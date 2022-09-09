@@ -43,3 +43,7 @@ test('"Destroyer" has sunk', () => {
 test('return "Submarine" length', () => {
   expect(submarine.getLength()).toBe(3);
 });
+
+test('return Ship name ("Submarine")', () => {
+  expect(submarine.getShipName()).toBe('Submarine');
+});
