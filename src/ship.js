@@ -29,6 +29,10 @@ class Ship {
     return this.length.length;
   }
 
+  getShipName() {
+    return this.shipClass;
+  }
+
   hit(num) {
     if (this.length.length >= num && num > 0) {
       // this.isHit = true;
