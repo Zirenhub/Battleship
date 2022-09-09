@@ -2,43 +2,46 @@ class Ship {
   constructor(shipClass) {
     this.shipClass = shipClass;
     this.length = this.assignClassLength();
-    this.isHit = false;
+    // this.isHit = false;
     this.isSunk = false;
   }
 
   assignClassLength() {
     if (this.shipClass === 'Carrier') {
-      return [0, 1, 2, 3, 4];
+      return [1, 2, 3, 4, 5];
     }
     if (this.shipClass === 'Battleship') {
-      return [0, 1, 2, 3];
+      return [1, 2, 3, 4];
     }
     if (this.shipClass === 'Destroyer') {
-      return [0, 1, 2];
+      return [1, 2, 3];
     }
     if (this.shipClass === 'Submarine') {
-      return [0, 1, 2];
+      return [1, 2, 3];
     }
     if (this.shipClass === 'Patrol Boat') {
-      return [0, 1];
+      return [1, 2];
     }
     return console.log('something went wrong');
   }
 
+  getLength() {
+    return this.length.length;
+  }
+
   hit(num) {
-    if (this.length.length >= num) {
-      this.isHit = true;
-      this.length[num] = 'hit';
+    if (this.length.length >= num && num > 0) {
+      // this.isHit = true;
+      this.length[num - 1] = 'hit';
+      this.sunk();
     }
   }
 
-  // isSunk() {
-  //   // calculate based on length whether all positions are hit.
-  // }
+  sunk() {
+    const checkSunk = (current) => current === 'hit';
+
+    if (this.length.every(checkSunk)) this.isSunk = true;
+  }
 }
-
-const carrier = new Ship('Destroyer');
-
-console.log(carrier);
 
 export default Ship;
