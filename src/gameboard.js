@@ -46,7 +46,11 @@ class Gameboard {
       }
     }
 
-    // this.checkProximity([x, y], shipLength, direction);
+    if (this.checkProximity([x, y], shipLength, direction)) {
+      return console.log(
+        'occupied by ship nearby (sides or top/bottom and edges)'
+      );
+    }
 
     while (shipLength > 0) {
       if (direction === 'ver') {
@@ -97,14 +101,36 @@ class Gameboard {
       length -= 1;
     }
 
-    verMoves.forEach((m) => {
+    const searchAround = verMoves.some((m) => {
       let { checkX } = m;
       checkX = m.x;
       let { checkY } = m;
       checkY = m.y;
 
-      console.log(`${this.gameboard[checkX][checkY]} ${checkX} / ${checkY}`);
+      // check if we are searching for ships out of gameboard border
+      // and if we are then reset back to smallest or largest possible edge
+      if (checkX < 0) {
+        checkX = 0;
+      } else if (checkX > 9) {
+        checkX = 9;
+      }
+      if (checkY < 0) {
+        checkY = 0;
+      } else if (checkY > 9) {
+        checkY = 9;
+      }
+
+      if (this.gameboard[checkX][checkY] !== null) {
+        console.log(
+          `${this.gameboard[checkX][checkY]} ${checkX} / ${checkY} FILLED`
+        );
+        return true;
+      }
     });
+
+    if (searchAround) {
+      return true;
+    }
 
     // shipPos.forEach((pos) => {
     //   console.log(pos);
@@ -127,8 +153,9 @@ class Gameboard {
 
 const gameboard = new Gameboard();
 gameboard.placeShip('Submarine', [2, 2], 'ver');
-gameboard.placeShip('Patrol Boat', [2, 1], 'ver');
-gameboard.checkProximity([2, 2], 3, 'ver');
+gameboard.placeShip('Patrol Boat', [0, 4], 'ver');
+
+// gameboard.checkProximity([2, 2], 3, 'ver');
 // gameboard.receiveAttack([2, 2]);
 
 gameboard.gameboard.forEach((element) => {
