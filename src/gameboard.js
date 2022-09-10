@@ -23,24 +23,25 @@ class Gameboard {
     let xCoor = x;
     let yCoor = y;
     let shipLength = newShip.getLength();
-    console.log(xCoor);
-    console.log(yCoor);
 
     while (shipLength > 0) {
-      this.gameboard[(xCoor += 1)][yCoor] = newShip.getShipName();
-      shipLength--;
+      if (direction === 'ver') {
+        this.gameboard[xCoor][yCoor] = newShip.getShipName();
+        xCoor += 1;
+      } else if (direction === 'hor') {
+        this.gameboard[xCoor][yCoor] = newShip.getShipName();
+        yCoor += 1;
+      }
+      shipLength -= 1;
     }
   }
 }
 
-const gameboard = new Gameboard();
-gameboard.placeShip('Destroyer', [4, 5], 'vertical');
+// const gameboard = new Gameboard();
+// gameboard.placeShip('Submarine', [5, 5], 'ver');
 
-console.log(gameboard);
-console.log(
-  gameboard.gameboard.forEach((element) => {
-    console.log(element);
-  })
-);
+// gameboard.gameboard.forEach((element) => {
+//   console.log(element);
+// });
 
 export default Gameboard;
