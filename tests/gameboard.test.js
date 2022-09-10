@@ -85,3 +85,22 @@ describe('placing ships', () => {
     ]);
   });
 });
+
+let logSpy;
+
+describe('placing ships at invalid pos', () => {
+  beforeEach(() => {
+    gameboard = new Gameboard();
+    logSpy = jest.spyOn(console, 'log');
+  });
+
+  test('place "Carrier" at invalid pos [6, 0] in ver dir', () => {
+    gameboard.placeShip('Carrier', [6, 0], 'ver');
+    expect(logSpy).toHaveBeenCalledWith('invalid X coordinates');
+  });
+
+  test('place "Carrier" at invalid pos [6, 6] in hor dir', () => {
+    gameboard.placeShip('Carrier', [6, 6], 'hor');
+    expect(logSpy).toHaveBeenCalledWith('invalid Y coordinates');
+  });
+});
