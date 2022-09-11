@@ -179,7 +179,7 @@ class Gameboard {
       console.log(`hitting ${shipHit.shipClass} from position ${counter}`);
     } else {
       this.missedShots.push([xCoor, yCoor]);
-      console.log(this.missedShots);
+      // console.log(this.missedShots);
       console.log('hit missed');
     }
   }
