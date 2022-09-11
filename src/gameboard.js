@@ -4,6 +4,7 @@ class Gameboard {
   constructor() {
     this.gameboard = this.constructor.createGameboard();
     this.ships = [];
+    this.missedShots = [];
   }
 
   static createGameboard() {
@@ -52,7 +53,11 @@ class Gameboard {
       );
     }
 
+    // reset ship's length since we have it saved at variable shipLength
+    // and fill the length array with this ship's position
+    newShip.length = [];
     while (shipLength > 0) {
+      newShip.length.push([xCoor, yCoor]);
       if (direction === 'ver') {
         this.gameboard[xCoor][yCoor] = newShip.getShipName();
         xCoor += 1;
@@ -139,6 +144,10 @@ class Gameboard {
   receiveAttack([x, y]) {
     const xCoor = x;
     const yCoor = y;
+    if (xCoor > 9 || xCoor < 0 || yCoor > 9 || yCoor < 0) {
+      console.log('invalid coordinates');
+      return;
+    }
     const hitCoor = this.gameboard[xCoor][yCoor];
 
     if (hitCoor !== null) {
@@ -155,22 +164,55 @@ class Gameboard {
         shipHit = 'Patrol Boat';
       }
       const findShip = (element) => element.shipClass === shipHit;
-      const ship = this.ships.findIndex(findShip);
-      console.log(this.ships[ship]);
+      const shipIndex = this.ships.findIndex(findShip);
+      shipHit = this.ships[shipIndex];
+      let counter = 1;
+      shipHit.length.some((pos) => {
+        if (pos[0] === xCoor && pos[1] === yCoor) {
+          return true;
+        }
+        counter += 1;
+        return false;
+      });
+      shipHit.hit(counter);
+      this.gameboard[xCoor][yCoor] = 'hit'; // update gameboard to display 'hit'
+      console.log(`hitting ${shipHit.shipClass} from position ${counter}`);
     } else {
+      this.missedShots.push([xCoor, yCoor]);
+      console.log(this.missedShots);
       console.log('hit missed');
     }
   }
+
+  checkAllShipsSunk() {
+    const ships = this.ships;
+
+    const AllShipsCheck = ships.every((ship) => {
+      if (ship.isSunk === true) {
+        return true;
+      }
+      return false;
+    });
+    if (AllShipsCheck === true) {
+      return true;
+    }
+    return false;
+  }
 }
 
-const gameboard = new Gameboard();
-gameboard.placeShip('Carrier', [3, 2], 'ver');
-gameboard.placeShip('Submarine', [6, 6], 'hor');
+// const gameboard = new Gameboard();
+// gameboard.placeShip('Carrier', [3, 3], 'ver');
+// gameboard.placeShip('Battleship', [0, 5], 'hor');
+// gameboard.placeShip('Destroyer', [6, 6], 'ver');
+// gameboard.placeShip('Submarine', [5, 1], 'ver');
+// gameboard.placeShip('Patrol Boat', [7, 8], 'ver');
 
-gameboard.receiveAttack([6, 6]);
+// console.log(gameboard.checkAllShipsSunk());
 
-gameboard.gameboard.forEach((element) => {
-  console.log(element);
-});
+// // gameboard.receiveAttack([3, 2]);
+
+// gameboard.gameboard.forEach((element) => {
+//   console.log(element);
+// });
 
 export default Gameboard;
