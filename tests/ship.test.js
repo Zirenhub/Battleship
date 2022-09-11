@@ -45,5 +45,5 @@ test('return "Submarine" length', () => {
 });
 
 test('return Ship name ("Submarine")', () => {
-  expect(submarine.getShipName()).toBe('Submarine');
+  expect(submarine.getShipName()).toBe('Sub');
 });
