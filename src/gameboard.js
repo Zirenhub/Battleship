@@ -54,10 +54,6 @@ class Gameboard {
 
     while (shipLength > 0) {
       if (direction === 'ver') {
-        // if (this.gameboard[xCoor][yCoor] !== null) {
-        //   break;
-        // }
-        // console.log('space is occupied');
         this.gameboard[xCoor][yCoor] = newShip.getShipName();
         xCoor += 1;
       } else if (direction === 'hor') {
@@ -73,51 +69,58 @@ class Gameboard {
     let xCoor = x;
     let yCoor = y;
     let length = shipLength;
-    const shipPos = [];
-    const verMoves = [
-      { x: xCoor - 1, y: yCoor },
-      { x: xCoor - 1, y: yCoor - 1 },
-      { x: xCoor - 1, y: yCoor + 1 },
-    ]; // ^ standard positions for top part of the ship.
+    let moves = [];
+    if (direction === 'ver') {
+      moves = [
+        { x: xCoor - 1, y: yCoor },
+        { x: xCoor - 1, y: yCoor - 1 },
+        { x: xCoor - 1, y: yCoor + 1 },
+      ];
+    } else if (direction === 'hor') {
+      moves = [
+        { x: xCoor, y: yCoor - 1 },
+        { x: xCoor - 1, y: yCoor - 1 },
+        { x: xCoor + 1, y: yCoor - 1 },
+      ];
+    } // ^ standard positions for top part of the ship.
 
     while (length > 0) {
       if (direction === 'ver') {
-        // console.log(this.gameboard[xCoor][yCoor]);
-        shipPos.push([xCoor, yCoor]);
-        verMoves.push({ x: xCoor, y: yCoor - 1 }, { x: xCoor, y: yCoor + 1 }); // positions for sides of the ship
+        moves.push({ x: xCoor, y: yCoor - 1 }, { x: xCoor, y: yCoor + 1 }); // positions for sides of the ship
+        moves.push({ x: xCoor, y: yCoor }); // positions for the ship itself
         xCoor += 1;
         if (length === 1) {
-          verMoves.push(
+          moves.push(
             { x: xCoor, y: yCoor },
             { x: xCoor, y: yCoor - 1 },
             { x: xCoor, y: yCoor + 1 }
           ); // ^ positions for the bottom part of the ship.
         }
       } else if (direction === 'hor') {
-        console.log(this.gameboard[xCoor][yCoor]);
+        moves.push({ x: xCoor - 1, y: yCoor }, { x: xCoor + 1, y: yCoor }); // positions for sides of the ship
+        moves.push({ x: xCoor, y: yCoor }); // positions for the ship itself
         yCoor += 1;
+        if (length === 1) {
+          moves.push(
+            { x: xCoor, y: yCoor },
+            { x: xCoor - 1, y: yCoor },
+            { x: xCoor + 1, y: yCoor }
+          ); // ^ positions for the bottom part of the ship.
+        }
       }
 
       length -= 1;
     }
 
-    const searchAround = verMoves.some((m) => {
+    const searchAround = moves.some((m) => {
       let { checkX } = m;
       checkX = m.x;
       let { checkY } = m;
       checkY = m.y;
 
-      // check if we are searching for ships out of gameboard border
-      // and if we are then reset back to smallest or largest possible edge
-      if (checkX < 0) {
-        checkX = 0;
-      } else if (checkX > 9) {
-        checkX = 9;
-      }
-      if (checkY < 0) {
-        checkY = 0;
-      } else if (checkY > 9) {
-        checkY = 9;
+      // if we are searching for out of gameboard border just skip
+      if (checkX < 0 || checkX > 9 || checkY < 0 || checkY > 9) {
+        return false;
       }
 
       if (this.gameboard[checkX][checkY] !== null) {
@@ -131,32 +134,40 @@ class Gameboard {
     if (searchAround) {
       return true;
     }
-
-    // shipPos.forEach((pos) => {
-    //   console.log(pos);
-    // });
-    // verMoves.forEach((pos) => {
-    //   console.log(pos);
-    // });
   }
 
-  // receiveAttack([x, y]) {
-  //   const xCoor = x;
-  //   const yCoor = y;
+  receiveAttack([x, y]) {
+    const xCoor = x;
+    const yCoor = y;
+    const hitCoor = this.gameboard[xCoor][yCoor];
 
-  //   if (this.gameboard[xCoor][yCoor] !== null) {
-  //     const ships = this.ships;
-  //     console.log(ships);
-  //   }
-  // }
+    if (hitCoor !== null) {
+      let shipHit;
+      if (hitCoor === 'Car') {
+        shipHit = 'Carrier';
+      } else if (hitCoor === 'Bat') {
+        shipHit = 'Battleship';
+      } else if (hitCoor === 'Des') {
+        shipHit = 'Destroyer';
+      } else if (hitCoor === 'Sub') {
+        shipHit = 'Submarine';
+      } else {
+        shipHit = 'Patrol Boat';
+      }
+      const findShip = (element) => element.shipClass === shipHit;
+      const ship = this.ships.findIndex(findShip);
+      console.log(this.ships[ship]);
+    } else {
+      console.log('hit missed');
+    }
+  }
 }
 
 const gameboard = new Gameboard();
-gameboard.placeShip('Submarine', [2, 2], 'ver');
-gameboard.placeShip('Patrol Boat', [0, 4], 'ver');
+gameboard.placeShip('Carrier', [3, 2], 'ver');
+gameboard.placeShip('Submarine', [6, 6], 'hor');
 
-// gameboard.checkProximity([2, 2], 3, 'ver');
-// gameboard.receiveAttack([2, 2]);
+gameboard.receiveAttack([6, 6]);
 
 gameboard.gameboard.forEach((element) => {
   console.log(element);
