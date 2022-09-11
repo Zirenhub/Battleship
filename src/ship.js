@@ -30,7 +30,7 @@ class Ship {
   }
 
   getShipName() {
-    return this.shipClass;
+    return this.shipClass.slice(0, 3);
   }
 
   hit(num) {
