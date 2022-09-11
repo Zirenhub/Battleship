@@ -299,8 +299,8 @@ describe('hitting ships', () => {
     gameboard.receiveAttack([6, 1]); //      | Submarine
     gameboard.receiveAttack([7, 1]); //-------
 
-    gameboard.receiveAttack([7, 8]); //------- Patrol Boat
-    gameboard.receiveAttack([8, 8]); //-------
+    gameboard.receiveAttack([7, 8]); // ------- Patrol Boat
+    gameboard.receiveAttack([8, 8]); // -------
 
     expect(gameboard.checkAllShipsSunk()).toBeTruthy();
   });
