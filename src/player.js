@@ -1,15 +1,20 @@
 import Gameboard from './gameboard.js';
 
 class Player {
-  constructor() {
+  constructor(name) {
     this.playerBoard = new Gameboard();
     this.opponent = null;
     this.allShots = [];
+    this.name = name;
   }
 
   // getTurn() {
   //   return this.opponent;
   // }
+
+  getName() {
+    return this.name;
+  }
 
   attacks([x, y]) {
     this.opponent.playerBoard.receiveAttack([x, y]);
