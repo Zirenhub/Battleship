@@ -22,8 +22,9 @@ const createPlayerGrid = (player) => {
       displayCell.classList.add('cell');
       displayCell.dataset.coor = cell;
       displayCell.addEventListener('click', () => {
-        // console.log(cell);
-        console.log(displayCell.dataset);
+        // thisPlayer.playerBoard.receiveAttack()
+        // console.log(row);
+        console.log(cell); // find a way to store coordinates in the dataset
       });
       playerContainer.appendChild(displayCell);
     });
@@ -32,7 +33,8 @@ const createPlayerGrid = (player) => {
   playerContainer.style.gridTemplateRows = `repeat(${arrayGrid.length}, auto)`;
 };
 
-const placeShips = (playerContainer, ship) => {
+const placeShips = (player, playerContainer, ship) => {
+  const arrayGrid = player.playerBoard.gameboard;
   const shipPlaced = ship;
   const currentPlayerContainer = playerContainer;
   let shipName = ship.shipClass;
@@ -51,10 +53,18 @@ const placeShips = (playerContainer, ship) => {
     //   for DOM purposes expample: bellow at displayGridPos [4, 9] becomes 50 so we target 50th div of the grid
     const displayGridPos = Number(`${xPos}${yPos}`); // joint the positions together [3, 5] becomes 36
     const playerGridPos = currentPlayerContainer.childNodes[displayGridPos]; // get the 36th grid div cell
-    playerGridPos.dataset.coor = shipName; // replace its dataset with the name of ship being placed
+    playerGridPos.dataset.coor = arrayGrid[pos[0]][pos[1]]; // replace its dataset with the name of ship being placed `${shipName}`
     playerGridPos.setAttribute('id', `${shipName}`); // give the div's id with the name of the ship being placed
+    // console.log(arrayGrid[pos[0]][pos[1]]);
   });
+
   // most likely not the best way of doing this, but the only solution i can think of 😕
+
+  // arrayGrid.forEach((row) => {
+  //   row.forEach((cell) => {
+  //     console.log(cell);
+  //   });
+  // });
 };
 
 const playerPlaceShip = (player, shipClass, [x, y], dir) => {
@@ -72,13 +82,13 @@ const playerPlaceShip = (player, shipClass, [x, y], dir) => {
 
   const ship = playerGameboard.getShip(shipPlaced); // store the ship
 
-  placeShips(playerOneContainer, ship);
+  placeShips(player, playerOneContainer, ship);
 };
 
 const AIUpdateDisplay = (playerAI) => {
   const AIShips = playerAI.playerBoard.ships;
   AIShips.forEach((ship) => {
-    placeShips(playerTwoContainer, ship);
+    placeShips(playerAI, playerTwoContainer, ship);
   });
 };
 

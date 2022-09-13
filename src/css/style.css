@@ -48,6 +48,12 @@ h1 {
     border: 1px solid rgba(57, 90, 180, 0.1);
     width: 55px;
     height: 55px;
+    cursor: pointer;
+    background-color: #efefefef;
+}
+
+.cell:hover {
+    background-color: antiquewhite;
 }
 
 #Carrier {
