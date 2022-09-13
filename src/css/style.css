@@ -28,20 +28,70 @@ h1 {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
+    box-shadow: var(--main-box-shadow);
+    padding: 30px 0px;
 }
 
 .player-one-container {
     border: 1px solid black;
     display: grid;
+    box-shadow: var(--main-box-shadow);
 }
 
 .player-two-container {
     border: 1px solid black;
     display: grid;
+    box-shadow: var(--main-box-shadow);
 }
 
 .cell {
-    border: 1px solid black;
+    border: 1px solid rgba(57, 90, 180, 0.1);
     width: 55px;
     height: 55px;
+}
+
+#Carrier {
+    background-color: #6be4c0;
+}
+
+#Battleship {
+    background-color: #2c87ff;
+}
+
+#Destroyer {
+    background-color: #e7e543;
+}
+
+#Submarine {
+    background-color: #ff74d1;
+}
+
+#patrolBoat {
+    background-color: #e45f3d;
+}
+
+.help-inst {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 1.6rem;
+}
+
+.help-inst > p:first-child{
+    color: #6be4c0;
+}
+
+.help-inst > p:nth-child(2){
+    color: #2c87ff;
+}
+
+.help-inst > p:nth-child(3){
+    color: #e7e543;
+}
+
+.help-inst > p:nth-child(4){
+    color: #ff74d1
+}
+
+.help-inst > p:nth-child(5){
+    color: #e45f3d;
 }
