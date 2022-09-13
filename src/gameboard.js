@@ -20,12 +20,19 @@ class Gameboard {
   }
 
   placeShip(s, [x, y], dir) {
+    const findShip = (element) => element.shipClass === s;
+    const checkShipExists = this.ships.find(findShip);
+    if (checkShipExists !== undefined) {
+      console.log('that ship already exists');
+      return false;
+    }
     let xCoor = x;
     let yCoor = y;
 
     const direction = dir;
     if (direction !== 'ver' && direction !== 'hor') {
-      return console.log('invalid direction only "ver" or "hor"');
+      console.log('invalid direction only "ver" or "hor"');
+      return false;
     }
 
     const newShip = new Ship(s);
@@ -33,24 +40,27 @@ class Gameboard {
 
     if (direction === 'ver') {
       if (yCoor < 0 || yCoor > 9) {
-        return console.log('invalid Y coordinates');
+        console.log('invalid Y coordinates');
+        return false;
       }
       if (xCoor - 1 + shipLength > 9 || xCoor < 0) {
-        return console.log('invalid X coordinates');
+        console.log('invalid X coordinates');
+        return false;
       }
     } else if (direction === 'hor') {
       if (yCoor - 1 + shipLength > 9 || yCoor < 0) {
-        return console.log('invalid Y coordinates');
+        console.log('invalid Y coordinates');
+        return false;
       }
       if (xCoor < 0 || xCoor > 9) {
-        return console.log('invalid X coordinates');
+        console.log('invalid X coordinates');
+        return false;
       }
     }
 
     if (this.checkProximity([x, y], shipLength, direction)) {
-      return console.log(
-        'occupied by ship nearby (sides or top/bottom and edges)'
-      );
+      console.log('occupied by ship nearby (sides or top/bottom and edges)');
+      return false;
     }
 
     // reset ship's length since we have it saved at variable shipLength
@@ -197,6 +207,18 @@ class Gameboard {
       return true;
     }
     return false;
+  }
+
+  getShip(ship) {
+    const allShips = this.ships;
+
+    const findShip = (element) => element.shipClass === ship;
+    const checkShipExists = allShips.find(findShip);
+    if (checkShipExists === undefined) {
+      console.log('no such ship');
+      return false;
+    }
+    return checkShipExists;
   }
 }
 
