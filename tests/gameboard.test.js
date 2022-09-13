@@ -305,3 +305,36 @@ describe('hitting ships', () => {
     expect(gameboard.checkAllShipsSunk()).toBeTruthy();
   });
 });
+
+describe('getting ship info', () => {
+  beforeEach(() => {
+    gameboard = new Gameboard();
+  });
+
+  test('get "Battleship" info', () => {
+    gameboard.placeShip('Battleship', [0, 5], 'hor');
+    expect(gameboard.getShip('Battleship')).toEqual({
+      shipClass: 'Battleship',
+      length: [
+        [0, 5],
+        [0, 6],
+        [0, 7],
+        [0, 8],
+      ],
+      isSunk: false,
+    });
+  });
+
+  test('get "Destroyer" info', () => {
+    gameboard.placeShip('Destroyer', [3, 5], 'ver');
+    expect(gameboard.getShip('Destroyer')).toEqual({
+      shipClass: 'Destroyer',
+      length: [
+        [3, 5],
+        [4, 5],
+        [5, 5],
+      ],
+      isSunk: false,
+    });
+  });
+});
