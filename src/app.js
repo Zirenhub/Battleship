@@ -1,34 +1,55 @@
 import './css/style.css';
 import './index.html';
 import Player from './components/player.js';
-import {
-  createPlayerGrid,
-  playerPlaceShip,
-  AIUpdateDisplay,
-  recieveAttack,
-} from './components/dom-manipulation.js';
+import { createPlayerGrid, placeShips } from './components/dom-manipulation.js';
 
 const NewPlayer = Player;
 
-const gameStart = () => {
-  const playerOne = new NewPlayer('Human');
-  const playerAI = new NewPlayer('Computer');
-  playerOne.opponent = playerAI;
-  playerAI.opponent = playerOne;
+const playerOne = new NewPlayer('Human');
+const playerAI = new NewPlayer('Computer');
+playerOne.opponent = playerAI;
+playerAI.opponent = playerOne;
 
-  createPlayerGrid(playerOne);
-  createPlayerGrid(playerAI);
+const gameStart = {
+  init() {
+    createPlayerGrid(playerOne);
+    createPlayerGrid(playerAI);
+    playerAI.AIPlaceShips();
+    this.AIUpdateDisplay(playerAI);
+  },
 
-  playerPlaceShip(playerOne, 'Carrier', [0, 0], 'hor');
-  playerPlaceShip(playerOne, 'Battleship', [1, 7], 'ver');
-  playerPlaceShip(playerOne, 'Destroyer', [5, 4], 'ver');
-  playerPlaceShip(playerOne, 'Submarine', [3, 1], 'ver');
-  playerPlaceShip(playerOne, 'Patrol Boat', [4, 9], 'ver');
+  playerPlaceShip(player, shipClass, [x, y], dir) {
+    const playerGameboard = player.playerBoard;
+    const shipPlaced = shipClass;
+    const pos0 = x;
+    const pos1 = y;
+    const direction = dir;
 
-  playerAI.AIPlaceShips();
-  AIUpdateDisplay(playerAI);
+    if (
+      playerGameboard.placeShip(shipPlaced, [pos0, pos1], direction) === false
+    ) {
+      return;
+    } // place the ship in players gameboard // if false is returned then exit, something went wrong
+
+    const ship = playerGameboard.getShip(shipPlaced); // store the ship
+    placeShips(playerOne, ship);
+  },
+
+  AIUpdateDisplay(playerAI) {
+    const AIShips = playerAI.playerBoard.ships;
+
+    AIShips.forEach((ship) => {
+      placeShips(playerAI, ship);
+    });
+  },
 };
 
-const gameLoop = () => {};
+// const gameLoop = () => {};
 
-gameStart();
+gameStart.init();
+
+gameStart.playerPlaceShip(playerOne, 'Carrier', [0, 0], 'hor');
+gameStart.playerPlaceShip(playerOne, 'Battleship', [1, 7], 'ver');
+gameStart.playerPlaceShip(playerOne, 'Destroyer', [5, 4], 'ver');
+gameStart.playerPlaceShip(playerOne, 'Submarine', [3, 1], 'ver');
+gameStart.playerPlaceShip(playerOne, 'Patrol Boat', [4, 9], 'ver');

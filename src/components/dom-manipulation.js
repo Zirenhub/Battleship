@@ -3,7 +3,7 @@ const playerTwoContainer = document.querySelector('.player-two-container');
 
 const getPlayerContainer = (thisPlayer) => {
   let currentPlayerContainer;
-  if (thisPlayer.getName() === 'Human') {
+  if (thisPlayer.getName() !== 'Computer') {
     currentPlayerContainer = playerOneContainer;
   } else if (thisPlayer.getName() === 'Computer') {
     currentPlayerContainer = playerTwoContainer;
@@ -58,9 +58,9 @@ const createPlayerGrid = (player) => {
   playerContainer.style.gridTemplateRows = `repeat(${arrayGrid.length}, auto)`;
 };
 
-const placeShips = (playerContainer, ship) => {
+const placeShips = (player, ship) => {
   const shipPlaced = ship;
-  const currentPlayerContainer = playerContainer;
+  const playerContainer = getPlayerContainer(player);
   let shipName = ship.shipClass;
   const shipPositions = shipPlaced.length; // get the length of the ship // length is also array of the positions as in [3, 5] etc.
 
@@ -72,37 +72,10 @@ const placeShips = (playerContainer, ship) => {
     const yPos = pos[1]; // store the second coordinate
     const dataID = `${xPos} ${yPos}`; // store both of the coordinates into a string exp: 3 5
 
-    const child = currentPlayerContainer.querySelector(
-      `[data-coor='${dataID}']`
-    ); // ^ store the child div of the currentPlayerContainer with the current dataID
+    const child = playerContainer.querySelector(`[data-coor='${dataID}']`); // ^ store the child div of the playerContainer with the current dataID
     child.setAttribute('id', `${shipName}`); // set the div's id with the name of the ship being placed
   });
   // most likely not the best way of doing this, but the only solution i can think of 😕
 };
 
-const playerPlaceShip = (player, shipClass, [x, y], dir) => {
-  const playerGameboard = player.playerBoard;
-  const shipPlaced = shipClass;
-  const pos0 = x;
-  const pos1 = y;
-  const direction = dir;
-
-  if (
-    playerGameboard.placeShip(shipPlaced, [pos0, pos1], direction) === false
-  ) {
-    return;
-  } // place the ship in players gameboard // if false is returned then exit, something went wrong
-
-  const ship = playerGameboard.getShip(shipPlaced); // store the ship
-  placeShips(playerOneContainer, ship);
-};
-
-const AIUpdateDisplay = (playerAI) => {
-  const AIShips = playerAI.playerBoard.ships;
-
-  AIShips.forEach((ship) => {
-    placeShips(playerTwoContainer, ship);
-  });
-};
-
-export { createPlayerGrid, playerPlaceShip, AIUpdateDisplay, recieveAttack };
+export { createPlayerGrid, placeShips };
