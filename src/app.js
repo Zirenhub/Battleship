@@ -1,27 +1,34 @@
 import './css/style.css';
 import './index.html';
-import Player from './player.js';
+import Player from './components/player.js';
 import {
   createPlayerGrid,
   playerPlaceShip,
   AIUpdateDisplay,
-} from './dom-manipulation.js';
+  recieveAttack,
+} from './components/dom-manipulation.js';
 
 const NewPlayer = Player;
 
-const playerOne = new NewPlayer('Human');
-const playerAI = new NewPlayer('Computer');
-playerOne.opponent = playerAI;
-playerAI.opponent = playerOne;
+const gameStart = () => {
+  const playerOne = new NewPlayer('Human');
+  const playerAI = new NewPlayer('Computer');
+  playerOne.opponent = playerAI;
+  playerAI.opponent = playerOne;
 
-createPlayerGrid(playerOne);
-createPlayerGrid(playerAI);
+  createPlayerGrid(playerOne);
+  createPlayerGrid(playerAI);
 
-playerPlaceShip(playerOne, 'Carrier', [0, 0], 'hor');
-playerPlaceShip(playerOne, 'Battleship', [1, 7], 'ver');
-playerPlaceShip(playerOne, 'Destroyer', [5, 4], 'ver');
-playerPlaceShip(playerOne, 'Submarine', [3, 1], 'ver');
-playerPlaceShip(playerOne, 'Patrol Boat', [4, 9], 'ver');
+  playerPlaceShip(playerOne, 'Carrier', [0, 0], 'hor');
+  playerPlaceShip(playerOne, 'Battleship', [1, 7], 'ver');
+  playerPlaceShip(playerOne, 'Destroyer', [5, 4], 'ver');
+  playerPlaceShip(playerOne, 'Submarine', [3, 1], 'ver');
+  playerPlaceShip(playerOne, 'Patrol Boat', [4, 9], 'ver');
 
-playerAI.AIPlaceShips();
-AIUpdateDisplay(playerAI);
+  playerAI.AIPlaceShips();
+  AIUpdateDisplay(playerAI);
+};
+
+const gameLoop = () => {};
+
+gameStart();

@@ -19,7 +19,7 @@ class Player {
   attacks([x, y]) {
     if (this.checkAlreadyShot([x, y])) {
       return false;
-    }
+    } // if the [x, y] position is already shot at return with false
     this.allShots.push([x, y]);
     if (this.opponent.playerBoard.receiveAttack([x, y])) {
       return true;

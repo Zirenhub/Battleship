@@ -11,12 +11,14 @@ const getPlayerContainer = (thisPlayer) => {
   return currentPlayerContainer;
 };
 
-const attackShip = (displayCell, arrayFormat, thisPlayer) => {
+const recieveAttack = (displayCell, arrayFormat, thisPlayer) => {
   displayCell.classList.remove('cell');
   if (thisPlayer.opponent.attacks(arrayFormat)) {
     displayCell.classList.add('hit');
   } // example: thisPlayer = playerTwo, when we click on playerTwo's board playerTwo's opponent attacks.
   displayCell.classList.add('missed');
+
+  // after AI takes the attack it's AI's turn to attack
 };
 
 const createPlayerGrid = (player) => {
@@ -34,7 +36,7 @@ const createPlayerGrid = (player) => {
         displayCell.addEventListener(
           'click',
           () => {
-            attackShip(displayCell, arrayFormat, thisPlayer);
+            recieveAttack(displayCell, arrayFormat, thisPlayer);
           },
           false
         );
@@ -103,4 +105,4 @@ const AIUpdateDisplay = (playerAI) => {
   });
 };
 
-export { createPlayerGrid, playerPlaceShip, AIUpdateDisplay };
+export { createPlayerGrid, playerPlaceShip, AIUpdateDisplay, recieveAttack };
