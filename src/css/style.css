@@ -45,7 +45,7 @@ h1 {
 }
 
 .cell, .hit, .missed {
-    border: 1px solid rgba(57, 90, 180, 0.1);
+    border: 1px solid black;
     width: 55px;
     height: 55px;
     cursor: pointer;
@@ -60,7 +60,7 @@ h1 {
 }
 
 .missed {
-    background-color: greenyellow;
+    background-color: rgb(31, 67, 133);
 }
 
 .cell:hover {
