@@ -156,7 +156,7 @@ class Gameboard {
     const yCoor = y;
     if (xCoor > 9 || xCoor < 0 || yCoor > 9 || yCoor < 0) {
       console.log('invalid coordinates');
-      return;
+      return false;
     }
     const hitCoor = this.gameboard[xCoor][yCoor];
 
@@ -187,11 +187,12 @@ class Gameboard {
       shipHit.hit(counter);
       this.gameboard[xCoor][yCoor] = 'hit'; // update gameboard to display 'hit'
       console.log(`hitting ${shipHit.shipClass} from position ${counter}`);
-    } else {
-      this.missedShots.push([xCoor, yCoor]);
-      // console.log(this.missedShots);
-      console.log('hit missed');
+      return true;
     }
+    this.missedShots.push([xCoor, yCoor]);
+    // console.log(this.missedShots);
+    console.log('hit missed');
+    return false;
   }
 
   checkAllShipsSunk() {
