@@ -44,12 +44,23 @@ h1 {
     box-shadow: var(--main-box-shadow);
 }
 
-.cell {
+.cell, .hit, .missed {
     border: 1px solid rgba(57, 90, 180, 0.1);
     width: 55px;
     height: 55px;
     cursor: pointer;
+}
+
+.cell {
     background-color: #efefefef;
+}
+
+.hit {
+    background-color: red !important;
+}
+
+.missed {
+    background-color: greenyellow;
 }
 
 .cell:hover {
