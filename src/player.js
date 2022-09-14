@@ -17,8 +17,14 @@ class Player {
   }
 
   attacks([x, y]) {
-    this.opponent.playerBoard.receiveAttack([x, y]);
+    if (this.checkAlreadyShot([x, y])) {
+      return false;
+    }
     this.allShots.push([x, y]);
+    if (this.opponent.playerBoard.receiveAttack([x, y])) {
+      return true;
+    } // if shot was a hit return true
+    return false;
   }
 
   checkAlreadyShot([x, y]) {
@@ -30,6 +36,7 @@ class Player {
     });
 
     if (checkAlreadyShot === true) {
+      console.log('position is already shot at');
       return true;
     }
     return false;
@@ -39,31 +46,36 @@ class Player {
     return Math.floor(Math.random() * 10);
   }
 
+  randomDir() {
+    const myArray = ['ver', 'hor'];
+    return myArray[Math.floor(Math.random() * myArray.length)];
+  }
+
   AIPlaceShips() {
     this.playerBoard.placeShip(
       'Carrier',
       [this.randomNum(), this.randomNum()],
-      'ver'
+      this.randomDir()
     );
     this.playerBoard.placeShip(
       'Battleship',
       [this.randomNum(), this.randomNum()],
-      'hor'
+      this.randomDir()
     );
     this.playerBoard.placeShip(
       'Destroyer',
       [this.randomNum(), this.randomNum()],
-      'hor'
+      this.randomDir()
     );
     this.playerBoard.placeShip(
       'Submarine',
       [this.randomNum(), this.randomNum()],
-      'hor'
+      this.randomDir()
     );
     this.playerBoard.placeShip(
       'Patrol Boat',
       [this.randomNum(), this.randomNum()],
-      'ver'
+      this.randomDir()
     );
 
     if (this.playerBoard.ships.length < 5) {
@@ -74,7 +86,6 @@ class Player {
   AIAttacks() {
     const attackCoor = [this.randomNum(), this.randomNum()];
     if (this.checkAlreadyShot([attackCoor[0], attackCoor[1]])) {
-      console.log('position is already shot at, retrying');
       this.AIAttacks();
     }
 
