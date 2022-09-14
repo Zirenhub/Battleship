@@ -1,4 +1,4 @@
-import Ship from '../src/ship';
+import Ship from '../src/components/ship';
 
 const carrier = new Ship('Carrier');
 const destroyer = new Ship('Destroyer');

@@ -1,4 +1,4 @@
-import Gameboard from '../src/gameboard';
+import Gameboard from '../src/components/gameboard';
 
 const emptyBoard = [
   [null, null, null, null, null, null, null, null, null, null],
