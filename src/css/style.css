@@ -44,7 +44,7 @@ h1 {
     box-shadow: var(--main-box-shadow);
 }
 
-.cell, .hit, .missed {
+.cell, .cell.placing ,.hit, .missed {
     border: 1px solid black;
     width: 55px;
     height: 55px;
@@ -55,6 +55,14 @@ h1 {
     background-color: #efefefef;
 }
 
+.cell:hover {
+    background-color: antiquewhite;
+}
+
+.cell.placing:hover {
+    background-color: rgb(255, 150, 150);
+}
+
 .hit {
     background-color: red !important;
 }
@@ -63,9 +71,6 @@ h1 {
     background-color: rgb(31, 67, 133);
 }
 
-.cell:hover {
-    background-color: antiquewhite;
-}
 
 #Carrier {
     background-color: #6be4c0;

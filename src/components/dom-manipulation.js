@@ -90,11 +90,33 @@ const createPlayerGrid = (player) => {
         displayCell.dataset.coor = `${rowIndex} ${cellIndex}`;
         playerContainer.appendChild(displayCell);
       });
-    }); // this is the playerOneContainer and no eventlistener since AI doesn't need to click
+    }); // this is the playerOneContainer
   }
 
   playerContainer.style.gridTemplateColumns = `repeat(${arrayGrid.length}, auto)`;
   playerContainer.style.gridTemplateRows = `repeat(${arrayGrid.length}, auto)`;
+};
+
+const playerMoveShips = (shipSelected) => {
+  console.log(shipSelected);
+  const shipsLength = shipSelected.length;
+
+  const allChildren = playerOneContainer.querySelectorAll('.cell');
+
+  const classToggle = (evt, find, toggle) => {
+    [].forEach.call(document.querySelectorAll('.' + find), function (a) {
+      a.classList[evt.type === 'mouseover' ? 'add' : 'remove'](toggle);
+    });
+  };
+
+  for (var i = 0, len = allChildren.length; i < len; i++) {
+    allChildren[i].addEventListener('mouseover', function (e) {
+      classToggle(e, 'cell', 'placing');
+    });
+    allChildren[i].addEventListener('mouseout', function (e) {
+      classToggle(e, 'cell', 'placing');
+    });
+  }
 };
 
 const placeShips = (player, ship) => {
@@ -113,6 +135,11 @@ const placeShips = (player, ship) => {
 
     const child = playerContainer.querySelector(`[data-coor='${dataID}']`); // ^ store the child div of the playerContainer with the current dataID
     child.setAttribute('id', `${shipName}`); // set the div's id with the name of the ship being placed
+    child.addEventListener('click', () => {
+      shipName === 'patrolBoat' ? (shipName = 'Patrol Boat') : shipName;
+      const shipSelected = player.playerBoard.getShip(shipName);
+      playerMoveShips(shipSelected);
+    });
   });
   // most likely not the best way of doing this, but the only solution i can think of 😕
 };

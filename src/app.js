@@ -16,7 +16,7 @@ const gameStart = {
     createPlayerGrid(playerAI);
 
     playerAI.AIPlaceShips();
-    this.AIUpdateDisplay(playerAI);
+    // this.AIUpdateDisplay(playerAI); // if you want to visualize AI's ships
   },
 
   playerPlaceShip(player, shipClass, [x, y], dir) {
