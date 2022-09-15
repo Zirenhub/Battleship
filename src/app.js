@@ -14,6 +14,7 @@ const gameStart = {
   init() {
     createPlayerGrid(playerOne);
     createPlayerGrid(playerAI);
+
     playerAI.AIPlaceShips();
     this.AIUpdateDisplay(playerAI);
   },
