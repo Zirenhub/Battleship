@@ -11,14 +11,35 @@ const getPlayerContainer = (thisPlayer) => {
   return currentPlayerContainer;
 };
 
+const AIAttacksDOM = (thisPlayer) => {
+  console.log(thisPlayer);
+  const AIAttackCoords = thisPlayer.AIAttacks();
+  const dataID = `${AIAttackCoords[0]} ${AIAttackCoords[1]}`;
+  const cell = playerOneContainer.querySelector(`[data-coor='${dataID}']`);
+  cell.classList.remove('cell');
+  if (!AIAttackCoords) {
+    cell.classList.add('hit');
+  } else {
+    cell.classList.add('missed');
+  }
+};
+
 const recieveAttack = (displayCell, arrayFormat, thisPlayer) => {
   displayCell.classList.remove('cell');
-  if (thisPlayer.opponent.attacks(arrayFormat)) {
-    displayCell.classList.add('hit');
-  } // example: thisPlayer = playerTwo, when we click on playerTwo's board playerTwo's opponent attacks.
-  displayCell.classList.add('missed');
+  const playerOneAttacks = thisPlayer.opponent.attacks(arrayFormat);
+  // when we click on playerTwo's board playerTwo's opponent attacks.
+  if (playerOneAttacks === undefined) {
+    return false;
+  } // undefined is returned when the positiong is already shot
 
-  // after AI takes the attack it's AI's turn to attack
+  if (playerOneAttacks) {
+    displayCell.classList.add('hit');
+  } else {
+    displayCell.classList.add('missed');
+  }
+  return true;
+
+  // now it's AI's turn to attack
 };
 
 const createPlayerGrid = (player) => {
@@ -36,7 +57,9 @@ const createPlayerGrid = (player) => {
         displayCell.addEventListener(
           'click',
           () => {
-            recieveAttack(displayCell, arrayFormat, thisPlayer);
+            if (recieveAttack(displayCell, arrayFormat, thisPlayer) !== false) {
+              AIAttacksDOM(thisPlayer);
+            } // ^ false will only be returned if playerOne attack is undefined wich means pos is already shot
           },
           false
         );

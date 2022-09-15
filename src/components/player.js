@@ -18,13 +18,12 @@ class Player {
 
   attacks([x, y]) {
     if (this.checkAlreadyShot([x, y])) {
-      return false;
-    } // if the [x, y] position is already shot at return with false
-    this.allShots.push([x, y]);
-    if (this.opponent.playerBoard.receiveAttack([x, y])) {
-      return true;
-    } // if shot was a hit return true
-    return false;
+      return;
+      // if the [x, y] position is already shot at return // exit
+    } else {
+      this.allShots.push([x, y]); // push this shot position to opponents board
+      return this.opponent.playerBoard.receiveAttack([x, y]); // returns true if shot hit, false if it didn't
+    }
   }
 
   checkAlreadyShot([x, y]) {
@@ -86,13 +85,12 @@ class Player {
   AIAttacks() {
     const attackCoor = [this.randomNum(), this.randomNum()];
     if (this.checkAlreadyShot([attackCoor[0], attackCoor[1]])) {
-      this.AIAttacks();
+      console.log('AI is gonna retry hitting');
+      return this.AIAttacks(); // do AIAttacks until AI hits with available position
+    } else {
+      this.attacks(attackCoor);
+      return attackCoor;
     }
-
-    this.attacks(attackCoor);
-
-    // return the rando coordinates ?
-    console.log(attackCoor);
   }
 }
 
