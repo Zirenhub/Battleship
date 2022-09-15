@@ -4,7 +4,7 @@ class Gameboard {
   constructor() {
     this.gameboard = this.constructor.createGameboard();
     this.ships = [];
-    this.missedShots = [];
+    this.missedShots = []; // forgot about this and didn't use it to visualize missed hits
   }
 
   static createGameboard() {
@@ -20,10 +20,8 @@ class Gameboard {
   }
 
   placeShip(s, [x, y], dir) {
-    const findShip = (element) => element.shipClass === s;
-    const checkShipExists = this.ships.find(findShip);
-    if (checkShipExists !== undefined) {
-      console.log('that ship already exists');
+    const checkShipExists = this.getShip(s);
+    if (!!checkShipExists) {
       return false;
     }
     let xCoor = x;
@@ -173,9 +171,8 @@ class Gameboard {
       } else {
         shipHit = 'Patrol Boat';
       }
-      const findShip = (element) => element.shipClass === shipHit; // refactor using new getShip
-      const shipIndex = this.ships.findIndex(findShip);
-      shipHit = this.ships[shipIndex];
+
+      shipHit = this.getShip(shipHit);
       let counter = 1;
       shipHit.length.some((pos) => {
         if (pos[0] === xCoor && pos[1] === yCoor) {
@@ -183,13 +180,14 @@ class Gameboard {
         }
         counter += 1;
         return false;
-      });
+      }); // ^ find which position we are hitting the ship from
       shipHit.hit(counter);
       this.gameboard[xCoor][yCoor] = 'hit'; // update gameboard to display 'hit'
+
       console.log(`hitting ${shipHit.shipClass} from position ${counter}`);
       return true;
     }
-    this.missedShots.push([xCoor, yCoor]);
+    this.missedShots.push([xCoor, yCoor]); // kind of forgot about this, this is not beign used
     // console.log(this.missedShots);
     console.log('hit missed');
     return false;
