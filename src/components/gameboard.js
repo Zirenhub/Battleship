@@ -173,7 +173,7 @@ class Gameboard {
       } else {
         shipHit = 'Patrol Boat';
       }
-      const findShip = (element) => element.shipClass === shipHit;
+      const findShip = (element) => element.shipClass === shipHit; // refactor using new getShip
       const shipIndex = this.ships.findIndex(findShip);
       shipHit = this.ships[shipIndex];
       let counter = 1;
