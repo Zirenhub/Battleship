@@ -17,7 +17,8 @@ const AIAttacksDOM = (thisPlayer) => {
   const dataID = `${AIAttackCoords[0]} ${AIAttackCoords[1]}`;
   const cell = playerOneContainer.querySelector(`[data-coor='${dataID}']`);
   cell.classList.remove('cell');
-  if (!AIAttackCoords) {
+  // only the human's ships have id to visualize them in the board with different colors
+  if (cell.hasAttribute('id')) {
     cell.classList.add('hit');
   } else {
     cell.classList.add('missed');
