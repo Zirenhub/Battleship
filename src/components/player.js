@@ -6,6 +6,7 @@ class Player {
     this.opponent = null;
     this.allShots = [];
     this.name = name;
+    this.winner = false;
   }
 
   // getTurn() {
@@ -21,8 +22,13 @@ class Player {
       return;
       // if the [x, y] position is already shot at return // exit
     } else {
-      this.allShots.push([x, y]); // push this shot position to opponents board
-      return this.opponent.playerBoard.receiveAttack([x, y]); // returns true if shot hit, false if it didn't
+      this.allShots.push([x, y]);
+      const attackOpponent = this.opponent.playerBoard.receiveAttack([x, y]); // returns true if shot hit, false if it didn't
+      const isAllOpponentShipsSunk =
+        this.opponent.playerBoard.checkAllShipsSunk(); // returns true if all ships are sunk, false otherwise
+
+      if (isAllOpponentShipsSunk) this.winner = true;
+      return attackOpponent;
     }
   }
 

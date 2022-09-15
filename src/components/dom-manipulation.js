@@ -1,5 +1,6 @@
 const playerOneContainer = document.querySelector('.player-one-container');
 const playerTwoContainer = document.querySelector('.player-two-container');
+const contentParent = document.querySelector('.main-container');
 
 const getPlayerContainer = (thisPlayer) => {
   let currentPlayerContainer;
@@ -9,6 +10,12 @@ const getPlayerContainer = (thisPlayer) => {
     currentPlayerContainer = playerTwoContainer;
   }
   return currentPlayerContainer;
+};
+
+const declareWinner = (player) => {
+  let winnerCongratsText = document.createElement('div');
+  winnerCongratsText.textContent = `Congrats ${player.getName()} won the game!`;
+  contentParent.appendChild(winnerCongratsText);
 };
 
 const AIAttacksDOM = (thisPlayer) => {
@@ -31,7 +38,7 @@ const recieveAttack = (displayCell, arrayFormat, thisPlayer) => {
   // when we click on playerTwo's board playerTwo's opponent attacks.
   if (playerOneAttacks === undefined) {
     return false;
-  } // undefined is returned when the positiong is already shot
+  } // undefined is returned when the position is already shot
 
   if (playerOneAttacks) {
     displayCell.classList.add('hit');
@@ -60,7 +67,15 @@ const createPlayerGrid = (player) => {
           () => {
             if (recieveAttack(displayCell, arrayFormat, thisPlayer) !== false) {
               AIAttacksDOM(thisPlayer);
-            } // ^ false will only be returned if playerOne attack is undefined wich means pos is already shot
+              // ^ false will only be returned if playerOne attack is undefined which means pos is already shot,
+              // in which case AI doesn't attack and we wait for player to click on a tile that hasn't been shot
+            }
+            if (thisPlayer.winner === true) {
+              declareWinner(thisPlayer);
+            }
+            if (thisPlayer.opponent.winner === true) {
+              declareWinner(thisPlayer.opponent);
+            }
           },
           false
         );
