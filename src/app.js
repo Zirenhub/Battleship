@@ -53,4 +53,4 @@ gameStart.playerPlaceShip(playerOne, 'Carrier', [0, 0], 'hor');
 gameStart.playerPlaceShip(playerOne, 'Battleship', [1, 7], 'ver');
 gameStart.playerPlaceShip(playerOne, 'Destroyer', [5, 4], 'ver');
 gameStart.playerPlaceShip(playerOne, 'Submarine', [3, 1], 'ver');
-gameStart.playerPlaceShip(playerOne, 'Patrol Boat', [4, 9], 'ver');
+gameStart.playerPlaceShip(playerOne, 'PatrolBoat', [4, 9], 'ver');

@@ -181,7 +181,7 @@ class Gameboard {
       } else if (hitCoor === 'Sub') {
         shipHit = 'Submarine';
       } else {
-        shipHit = 'Patrol Boat';
+        shipHit = 'PatrolBoat';
       }
 
       shipHit = this.getShip(shipHit);
@@ -248,7 +248,7 @@ class Gameboard {
 // // gameboard.placeShip('Battleship', [0, 5], 'hor');
 // // gameboard.placeShip('Destroyer', [6, 6], 'ver');
 // // gameboard.placeShip('Submarine', [5, 1], 'ver');
-// // gameboard.placeShip('Patrol Boat', [7, 8], 'ver');
+// gameboard.placeShip('PatrolBoat', [7, 8], 'ver');
 // gameboard.placeShip('Destroyer', [0, 0], 'ver');
 // gameboard.placeShip('Destroyer', [3, 5], 'hor');
 

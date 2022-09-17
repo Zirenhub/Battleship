@@ -78,7 +78,7 @@ class Player {
       this.randomDir()
     );
     this.playerBoard.placeShip(
-      'Patrol Boat',
+      'PatrolBoat',
       [this.randomNum(), this.randomNum()],
       this.randomDir()
     );

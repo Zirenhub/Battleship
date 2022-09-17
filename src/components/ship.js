@@ -18,7 +18,7 @@ class Ship {
     if (this.shipClass === 'Submarine') {
       return [1, 2, 3];
     }
-    if (this.shipClass === 'Patrol Boat') {
+    if (this.shipClass === 'PatrolBoat') {
       return [1, 2];
     }
     return console.log('something went wrong');
