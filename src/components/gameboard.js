@@ -244,17 +244,17 @@ class Gameboard {
 }
 
 // const gameboard = new Gameboard();
-// // gameboard.placeShip('Carrier', [3, 3], 'ver');
-// // gameboard.placeShip('Battleship', [0, 5], 'hor');
-// // gameboard.placeShip('Destroyer', [6, 6], 'ver');
-// // gameboard.placeShip('Submarine', [5, 1], 'ver');
-// gameboard.placeShip('PatrolBoat', [7, 8], 'ver');
-// gameboard.placeShip('Destroyer', [0, 0], 'ver');
-// gameboard.placeShip('Destroyer', [3, 5], 'hor');
+// gameboard.placeShip('Carrier', [0, 0], 'hor');
+// gameboard.placeShip('Battleship', [6, 2], 'ver');
+// gameboard.placeShip('Destroyer', [2, 1], 'ver');
+// gameboard.placeShip('Submarine', [5, 6], 'ver');
+// gameboard.placeShip('PatrolBoat', [8, 9], 'ver');
 
-// // gameboard.removeShip('Submarine');
+// gameboard.placeShip('Submarine', [4, 8], 'ver');
 
-// // gameboard.receiveAttack([3, 2]);
+// // // gameboard.removeShip('Submarine');
+
+// // // gameboard.receiveAttack([3, 2]);
 
 // gameboard.gameboard.forEach((element) => {
 //   console.log(element);
