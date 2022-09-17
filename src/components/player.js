@@ -57,35 +57,76 @@ class Player {
   }
 
   AIPlaceShips() {
-    this.playerBoard.placeShip(
-      'Carrier',
-      [this.randomNum(), this.randomNum()],
-      this.randomDir()
-    );
-    this.playerBoard.placeShip(
-      'Battleship',
-      [this.randomNum(), this.randomNum()],
-      this.randomDir()
-    );
-    this.playerBoard.placeShip(
-      'Destroyer',
-      [this.randomNum(), this.randomNum()],
-      this.randomDir()
-    );
-    this.playerBoard.placeShip(
-      'Submarine',
-      [this.randomNum(), this.randomNum()],
-      this.randomDir()
-    );
-    this.playerBoard.placeShip(
-      'PatrolBoat',
-      [this.randomNum(), this.randomNum()],
-      this.randomDir()
-    );
+    const placeCarrier = () => {
+      this.playerBoard.placeShip(
+        'Carrier',
+        [this.randomNum(), this.randomNum()],
+        this.randomDir()
+      );
+    };
 
-    if (this.playerBoard.ships.length < 5) {
-      this.AIPlaceShips();
-    } // brute force way of doing things, maybe check if ship exists and only if it doesn't then try that ship with rano coords ?
+    const placeBattleship = () => {
+      this.playerBoard.placeShip(
+        'Battleship',
+        [this.randomNum(), this.randomNum()],
+        this.randomDir()
+      );
+    };
+
+    const placeDestroyer = () => {
+      this.playerBoard.placeShip(
+        'Destroyer',
+        [this.randomNum(), this.randomNum()],
+        this.randomDir()
+      );
+    };
+
+    const placeSubmarine = () => {
+      this.playerBoard.placeShip(
+        'Submarine',
+        [this.randomNum(), this.randomNum()],
+        this.randomDir()
+      );
+    };
+
+    const placePatrolBoat = () => {
+      this.playerBoard.placeShip(
+        'PatrolBoat',
+        [this.randomNum(), this.randomNum()],
+        this.randomDir()
+      );
+    };
+
+    const allShips = this.playerBoard.ships;
+    const shipsToAdd = [
+      'Carrier',
+      'Battleship',
+      'Destroyer',
+      'Submarine',
+      'PatrolBoat',
+    ];
+
+    while (allShips.length !== 5) {
+      allShips.forEach((ship) => {
+        const shipName = ship.getShipClass();
+        if (shipsToAdd.includes(shipName)) {
+          shipsToAdd.splice(shipsToAdd.indexOf(shipName), 1); // remove the ship
+        }
+      });
+      shipsToAdd.forEach((ship) => {
+        if (ship === 'Carrier') {
+          placeCarrier();
+        } else if (ship === 'Battleship') {
+          placeBattleship();
+        } else if (ship === 'Destroyer') {
+          placeDestroyer();
+        } else if (ship === 'Submarine') {
+          placeSubmarine();
+        } else if (ship === 'PatrolBoat') {
+          placePatrolBoat();
+        }
+      });
+    }
   }
 
   AIAttacks() {
