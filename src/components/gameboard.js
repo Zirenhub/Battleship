@@ -20,10 +20,15 @@ class Gameboard {
   }
 
   placeShip(s, [x, y], dir) {
+    let newShip;
+
     const checkShipExists = this.getShip(s);
     if (!!checkShipExists) {
-      return false;
-    }
+      newShip = checkShipExists;
+    } else {
+      newShip = new Ship(s);
+    } // if the ship we are given exists then select that ship, we are relocating it, else create a new one
+
     let xCoor = x;
     let yCoor = y;
 
@@ -33,8 +38,7 @@ class Gameboard {
       return false;
     }
 
-    const newShip = new Ship(s);
-    let shipLength = newShip.getLength();
+    let shipLength = newShip.getLength(); // gives the length of the ship, as in length of the array
 
     if (direction === 'ver') {
       if (yCoor < 0 || yCoor > 9) {
@@ -56,10 +60,15 @@ class Gameboard {
       }
     }
 
+    if (!!checkShipExists) {
+      newShip.length.forEach((pos) => {
+        this.gameboard[pos[0]][pos[1]] = null;
+      }); // if the ship we are currently placing exists, meaning we are relocating it, then reset its position so checkProximity doesn't check for its own position
+    }
     if (this.checkProximity([x, y], shipLength, direction)) {
       console.log('occupied by ship nearby (sides or top/bottom and edges)');
       return false;
-    }
+    } // if checkPiximity returns true then we know we are placing our current ship too close to another ship, exit
 
     // reset ship's length since we have it saved at variable shipLength
     // and fill the length array with this ship's position
@@ -75,7 +84,10 @@ class Gameboard {
       }
       shipLength -= 1;
     }
-    this.ships.push(newShip);
+
+    if (!checkShipExists) {
+      this.ships.push(newShip);
+    } // only push current ship to ships if it's a new ship
   }
 
   checkProximity([x, y], shipLength, direction) {
@@ -140,7 +152,7 @@ class Gameboard {
         console.log(
           `${this.gameboard[checkX][checkY]} ${checkX} / ${checkY} FILLED`
         );
-        return true;
+        return true; // return true if there is a ship nearby
       }
     });
 
@@ -214,21 +226,33 @@ class Gameboard {
     const findShip = (element) => element.shipClass === ship;
     const checkShipExists = allShips.find(findShip);
     if (checkShipExists === undefined) {
-      console.log('no such ship');
+      // console.log('no such ship');
       return false;
     }
     return checkShipExists;
   }
+
+  removeShip(ship) {
+    const shipToBeRemoved = this.getShip(ship);
+    const positionsOfTheShip = shipToBeRemoved.length;
+
+    positionsOfTheShip.forEach((pos) => {
+      this.gameboard[pos[0]][pos[1]] = null;
+    });
+    this.ships.splice(this.ships.indexOf(shipToBeRemoved), 1); // remove the ship
+  }
 }
 
 // const gameboard = new Gameboard();
-// gameboard.placeShip('Carrier', [3, 3], 'ver');
-// gameboard.placeShip('Battleship', [0, 5], 'hor');
-// gameboard.placeShip('Destroyer', [6, 6], 'ver');
-// gameboard.placeShip('Submarine', [5, 1], 'ver');
-// gameboard.placeShip('Patrol Boat', [7, 8], 'ver');
+// // gameboard.placeShip('Carrier', [3, 3], 'ver');
+// // gameboard.placeShip('Battleship', [0, 5], 'hor');
+// // gameboard.placeShip('Destroyer', [6, 6], 'ver');
+// // gameboard.placeShip('Submarine', [5, 1], 'ver');
+// // gameboard.placeShip('Patrol Boat', [7, 8], 'ver');
+// gameboard.placeShip('Destroyer', [0, 0], 'ver');
+// gameboard.placeShip('Destroyer', [3, 5], 'hor');
 
-// console.log(gameboard.checkAllShipsSunk());
+// // gameboard.removeShip('Submarine');
 
 // // gameboard.receiveAttack([3, 2]);
 

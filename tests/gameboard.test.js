@@ -338,3 +338,44 @@ describe('getting ship info', () => {
     });
   });
 });
+
+describe('moving ships to different location', () => {
+  beforeEach(() => {
+    gameboard = new Gameboard();
+    // logSpy = jest.spyOn(console, 'log');
+  });
+
+  test('move "Destroyer" to [3, 5]', () => {
+    gameboard.placeShip('Destroyer', [0, 0], 'ver');
+    gameboard.placeShip('Destroyer', [3, 5], 'hor');
+    expect(gameboard.gameboard).toEqual([
+      [null, null, null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, 'Des', 'Des', 'Des', null, null],
+      [null, null, null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null, null, null],
+    ]);
+  });
+
+  test('move "Submarine" to [5, 5]', () => {
+    gameboard.placeShip('Destroyer', [5, 5], 'ver');
+    gameboard.placeShip('Submarine', [5, 5], 'hor');
+    expect(gameboard.gameboard).toEqual([
+      [null, null, null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, 'Des', null, null, null, null],
+      [null, null, null, null, null, 'Des', null, null, null, null],
+      [null, null, null, null, null, 'Des', null, null, null, null],
+      [null, null, null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null, null, null],
+    ]);
+  });
+});

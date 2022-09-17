@@ -2,7 +2,6 @@ class Ship {
   constructor(shipClass) {
     this.shipClass = shipClass;
     this.length = this.assignClassLength();
-    // this.isHit = false;
     this.isSunk = false;
   }
 
@@ -33,9 +32,12 @@ class Ship {
     return this.shipClass.slice(0, 3);
   }
 
+  getShipClass() {
+    return this.shipClass;
+  }
+
   hit(num) {
     if (this.length.length >= num && num > 0) {
-      // this.isHit = true;
       this.length[num - 1] = 'hit';
       this.sunk();
     }

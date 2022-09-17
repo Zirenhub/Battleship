@@ -44,7 +44,7 @@ h1 {
     box-shadow: var(--main-box-shadow);
 }
 
-.cell, .cell.placing ,.hit, .missed {
+.cell, .cell.placing, .cell.error ,.hit, .missed {
     border: 1px solid black;
     width: 55px;
     height: 55px;
@@ -59,8 +59,12 @@ h1 {
     background-color: antiquewhite;
 }
 
-.cell.placing:hover {
+.cell.placing {
     background-color: rgb(255, 150, 150);
+}
+
+.cell.error {
+    background-color: red;
 }
 
 .hit {
