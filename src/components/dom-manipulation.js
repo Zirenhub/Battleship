@@ -97,40 +97,59 @@ const createPlayerGrid = (player) => {
   playerContainer.style.gridTemplateRows = `repeat(${arrayGrid.length}, auto)`;
 };
 
-// const hoverEffect = (e, shipLength, mouseState) => {
-//   const dataID = e.target.dataset.coor;
-//   if (dataID === undefined) {
-//     return;
-//   }
+const addHoverEffect = (shipLength, e) => {
+  const length = shipLength;
+  console.log(length);
 
-//   const length = shipLength;
-//   let xPos = Number(dataID[0]);
-//   let yPos = Number(dataID[2]); // dataID[1] is empty space
+  const dataID = e.target.dataset.coor;
+  if (dataID === undefined) {
+    return;
+  }
 
-//   let selectedCell = playerOneContainer.querySelector(
-//     `[data-coor='${xPos} ${yPos}']`
-//   );
+  let xPos = Number(dataID[0]);
+  let yPos = Number(dataID[2]); // dataID[1] is empty space
 
-//   for (let i = 0; i < length; i++) {
-//     selectedCell = playerOneContainer.querySelector(
-//       `[data-coor='${xPos++} ${yPos}']`
-//     );
+  let selectedCell = playerOneContainer.querySelector(
+    `[data-coor='${xPos} ${yPos}']`
+  );
 
-//     if (selectedCell === null) {
-//       return;
-//     }
+  for (let i = 0; i < length; i++) {
+    selectedCell = playerOneContainer.querySelector(
+      `[data-coor='${xPos++} ${yPos}']`
+    );
 
-//     if (mouseState === 'mouseover') {
-//       selectedCell.classList.add('placing');
-//     } else {
-//       selectedCell.classList.remove('placing');
-//     }
-//   }
-// };
+    if (selectedCell === null) {
+      return;
+    }
 
-const playerMoveShip = (shipSelected, player) => {
-  // const ship = shipSelected;
-  // const shipLength = ship.length.length;
+    selectedCell.classList.add('placing');
+  }
+};
+
+const removeHoverEffect = () => {
+  const cells = document.querySelectorAll('.cell.placing');
+  cells.forEach((cell) => {
+    cell.classList.remove('placing');
+  });
+};
+
+const playerMoveShip = (shipLength) => {
+  const _listener = (e) => {
+    addHoverEffect(shipLength, e);
+  };
+
+  if (playerOneContainer.removeHoverEventListener) {
+    playerOneContainer.removeHoverEventListener();
+  }
+
+  playerOneContainer.addEventListener('mouseover', _listener);
+
+  playerOneContainer.removeHoverEventListener = () => {
+    playerOneContainer.removeEventListener('mouseover', _listener);
+  };
+
+  playerOneContainer.addEventListener('mouseout', removeHoverEffect);
+
   // playerOneContainer.addEventListener('mouseover', function _listener(e) {
   //   hoverEffect(e, shipLength, 'mouseover');
   //   let placeCell = playerOneContainer.querySelector('.cell.placing');
@@ -143,9 +162,6 @@ const playerMoveShip = (shipSelected, player) => {
   //       placeCell.removeEventListener('click', _placeShipListener);
   //     } // if we placed the ship in it's new location successfully, then remove the eventListeners
   //   });
-  // });
-  // playerOneContainer.addEventListener('mouseout', function _listenerOut(e) {
-  //   hoverEffect(e, shipLength, 'mouseout');
   // });
 };
 
@@ -188,10 +204,8 @@ const placeShips = (player, ship) => {
   const playerContainer = getPlayerContainer(player);
   let shipName = ship.shipClass;
   const shipPositions = shipPlaced.length; // get the length of the ship // length is also array of the positions as in [3, 5] etc.
+  const shipLength = shipPlaced.length.length;
 
-  if (shipName === 'Patrol Boat') {
-    shipName = 'patrolBoat';
-  } // to be fixed latter ^
   shipPositions.forEach((pos) => {
     const xPos = pos[0]; // store the first coordinate exp: [3, 5] store 3
     const yPos = pos[1]; // store the second coordinate
@@ -199,11 +213,7 @@ const placeShips = (player, ship) => {
 
     const child = playerContainer.querySelector(`[data-coor='${dataID}']`); // ^ store the child div of the playerContainer with the current dataID
     child.setAttribute('id', `${shipName}`); // set the div's id with the name of the ship being placed
-    child.addEventListener('click', () => {
-      shipName === 'patrolBoat' ? (shipName = 'Patrol Boat') : shipName;
-      const shipSelected = player.playerBoard.getShip(shipName);
-      playerMoveShip(shipSelected, player);
-    });
+    child.addEventListener('click', () => playerMoveShip(shipLength));
   });
   // most likely not the best way of doing this, but the only solution i can think of 😕
 };
