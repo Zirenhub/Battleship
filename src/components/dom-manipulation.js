@@ -99,7 +99,6 @@ const createPlayerGrid = (player) => {
 
 const addHoverEffect = (shipLength, e) => {
   const length = shipLength;
-  console.log(length);
 
   const dataID = e.target.dataset.coor;
   if (dataID === undefined) {
@@ -133,21 +132,31 @@ const removeHoverEffect = () => {
   });
 };
 
-const playerMoveShip = (shipLength) => {
-  const _listener = (e) => {
+const playerMoveShip = (shipLength, shipPlaced, player) => {
+  const _hoverListener = (e) => {
     addHoverEffect(shipLength, e);
   };
 
-  if (playerOneContainer.removeHoverEventListener) {
-    playerOneContainer.removeHoverEventListener();
-  }
+  const _placeListener = (e) => {
+    // let placeCell = playerOneContainer.querySelector('.cell.placing');
 
-  playerOneContainer.addEventListener('mouseover', _listener);
-
-  playerOneContainer.removeHoverEventListener = () => {
-    playerOneContainer.removeEventListener('mouseover', _listener);
+    const ship = shipPlaced;
+    newShipPos(e, ship, player);
   };
 
+  if (playerOneContainer.removeEventListeners) {
+    playerOneContainer.removeEventListeners();
+  }
+
+  playerOneContainer.addEventListener('mouseover', _hoverListener);
+  playerOneContainer.addEventListener('click', _placeListener);
+
+  playerOneContainer.removeEventListeners = () => {
+    playerOneContainer.removeEventListener('mouseover', _hoverListener);
+    playerOneContainer.removeEventListener('click', _placeListener);
+  };
+
+  // remove the hover effect on cells after mouseout
   playerOneContainer.addEventListener('mouseout', removeHoverEffect);
 
   // playerOneContainer.addEventListener('mouseover', function _listener(e) {
@@ -213,7 +222,9 @@ const placeShips = (player, ship) => {
 
     const child = playerContainer.querySelector(`[data-coor='${dataID}']`); // ^ store the child div of the playerContainer with the current dataID
     child.setAttribute('id', `${shipName}`); // set the div's id with the name of the ship being placed
-    child.addEventListener('click', () => playerMoveShip(shipLength));
+    child.addEventListener('click', () =>
+      playerMoveShip(shipLength, shipPlaced, player)
+    );
   });
   // most likely not the best way of doing this, but the only solution i can think of 😕
 };
