@@ -128,7 +128,7 @@ describe('placing ships at invalid pos', () => {
 
   test('place "Patrol Boat" too close to "Carrier"', () => {
     gameboard.placeShip('Carrier', [3, 8], 'ver');
-    gameboard.placeShip('Patrol Boat', [2, 8], 'ver');
+    gameboard.placeShip('PatrolBoat', [2, 8], 'ver');
     expect(logSpy).toHaveBeenCalledWith('Car 3 / 8 FILLED');
     expect(gameboard.gameboard).toEqual([
       [null, null, null, null, null, null, null, null, null, null],
@@ -145,7 +145,7 @@ describe('placing ships at invalid pos', () => {
   });
 
   test('place "Carrier" too close to "Patrol Boat"', () => {
-    gameboard.placeShip('Patrol Boat', [4, 2], 'hor');
+    gameboard.placeShip('PatrolBoat', [4, 2], 'hor');
     gameboard.placeShip('Carrier', [5, 4], 'hor');
     expect(logSpy).toHaveBeenCalledWith('Pat 4 / 3 FILLED');
     expect(gameboard.gameboard).toEqual([
@@ -279,7 +279,7 @@ describe('hitting ships', () => {
     gameboard.placeShip('Battleship', [0, 5], 'hor');
     gameboard.placeShip('Destroyer', [6, 6], 'ver');
     gameboard.placeShip('Submarine', [5, 1], 'ver');
-    gameboard.placeShip('Patrol Boat', [7, 8], 'ver');
+    gameboard.placeShip('PatrolBoat', [7, 8], 'ver');
     gameboard.receiveAttack([3, 3]); //-------
     gameboard.receiveAttack([4, 3]); //      |
     gameboard.receiveAttack([5, 3]); //      | Carrier
