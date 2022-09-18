@@ -14,6 +14,7 @@ const getPlayerContainer = (thisPlayer) => {
 
 const declareWinner = (player) => {
   let winnerCongratsText = document.createElement('div');
+  winnerCongratsText.setAttribute('id', 'winnerCongrats');
   winnerCongratsText.textContent = `Congrats ${player.getName()} won the game!`;
   contentParent.appendChild(winnerCongratsText);
 };
@@ -65,6 +66,12 @@ const createPlayerGrid = (player) => {
         displayCell.addEventListener(
           'click',
           () => {
+            if (
+              thisPlayer.winner === true ||
+              thisPlayer.opponent.winner === true
+            ) {
+              return;
+            }
             if (recieveAttack(displayCell, arrayFormat, thisPlayer) !== false) {
               AIAttacksDOM(thisPlayer);
               // ^ false will only be returned if playerOne attack is undefined which means pos is already shot,
@@ -132,6 +139,10 @@ const addHoverEffect = (length, placeCell, direction) => {
 };
 
 const playerMoveShip = (shipLength, shipPlaced, player) => {
+  if (player.allShots.length) {
+    return;
+  } // if game started // first shot was fired, then exit, player is not allowed to move ships
+
   let direction = 'ver';
 
   const changeHoverDirection = (e) => {

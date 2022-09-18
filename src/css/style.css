@@ -24,7 +24,7 @@ h1 {
 }
 
 .players-container {
-    border: 1px solid black;
+    /* border: 1px solid black; */
     display: flex;
     justify-content: space-evenly;
     align-items: center;
@@ -63,10 +63,6 @@ h1 {
     background-color: rgb(255, 150, 150);
 }
 
-.cell.error {
-    background-color: red;
-}
-
 .hit {
     background-color: red !important;
 }
@@ -94,6 +90,18 @@ h1 {
 
 #PatrolBoat {
     background-color: #e45f3d;
+}
+
+#hintContainer { 
+    text-align: center;
+    padding-top: 20px;
+    color: #8a8a8aef;
+}
+
+#winnerCongrats {
+    padding-top: 70px;
+    font-size: 1.5rem;
+    text-align: center;
 }
 
 .help-inst {
