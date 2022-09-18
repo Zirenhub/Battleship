@@ -97,7 +97,7 @@ const createPlayerGrid = (player) => {
   playerContainer.style.gridTemplateRows = `repeat(${arrayGrid.length}, auto)`;
 };
 
-const addHoverEffect = (length, placeCell) => {
+const addHoverEffect = (length, placeCell, direction) => {
   const shipLength = length;
 
   const dataID = placeCell.dataset.coor;
@@ -113,9 +113,15 @@ const addHoverEffect = (length, placeCell) => {
   );
 
   for (let i = 0; i < shipLength; i++) {
-    selectedCell = playerOneContainer.querySelector(
-      `[data-coor='${xPos++} ${yPos}']`
-    );
+    if (direction === 'ver') {
+      selectedCell = playerOneContainer.querySelector(
+        `[data-coor='${xPos++} ${yPos}']`
+      );
+    } else if (direction === 'hor') {
+      selectedCell = playerOneContainer.querySelector(
+        `[data-coor='${xPos} ${yPos++}']`
+      );
+    }
 
     if (selectedCell === null) {
       return;
@@ -126,16 +132,27 @@ const addHoverEffect = (length, placeCell) => {
 };
 
 const playerMoveShip = (shipLength, shipPlaced, player) => {
+  let direction = 'ver';
+
+  const changeHoverDirection = (e) => {
+    if (e.key === 'r') {
+      direction === 'ver' ? (direction = 'hor') : (direction = 'ver');
+    }
+  };
+
   const _placeListener = (placeCell) => {
     const target = placeCell.target;
     const ship = shipPlaced;
-    newShipPos(target, ship, player);
+    if (newShipPos(target, ship, player, direction)) {
+      playerOneContainer.removeEventListeners();
+      document.removeEventListener('keydown', changeHoverDirection);
+    }
   };
 
   const _hoverListener = (e) => {
     const placeCell = e.target;
     const length = shipLength;
-    addHoverEffect(length, placeCell);
+    addHoverEffect(length, placeCell, direction);
 
     placeCell.addEventListener('click', _placeListener);
   };
@@ -153,9 +170,11 @@ const playerMoveShip = (shipLength, shipPlaced, player) => {
   }
 
   playerOneContainer.addEventListener('mouseover', _hoverListener);
+  document.addEventListener('keydown', changeHoverDirection);
 
   playerOneContainer.removeEventListeners = () => {
     playerOneContainer.removeEventListener('mouseover', _hoverListener);
+    removeHoverEffect();
   };
 
   // remove the hover effect on cells after mouseout
@@ -167,12 +186,14 @@ const removeOldShipPos = (oldShipPosArray) => {
   positionsToRemove.forEach((pos) => {
     const cell = document.querySelector(`[data-coor='${pos[0]} ${pos[1]}']`);
     cell.removeAttribute('id');
-    const clone = cell.cloneNode(true);
+    const clone = cell.cloneNode(false);
     cell.parentNode.replaceChild(clone, cell);
   });
+  // cleaning old positions of the relocated ship, removing its id and replacing it with a node clone,
+  // to remove its eventListeners, not the best way of doing this
 };
 
-const newShipPos = (target, ship, player) => {
+const newShipPos = (target, ship, player, direction) => {
   const targetCell = target.dataset.coor;
   const targetShip = ship.getShipClass();
   const pos = [Number(targetCell[0]), Number(targetCell[2])];
@@ -185,7 +206,13 @@ const newShipPos = (target, ship, player) => {
     oldShipPosArray.push(pos);
   });
 
-  const newShipPos = player.playerBoard.placeShip(targetShip, pos, 'ver');
+  let newShipPos;
+
+  if (direction === 'ver') {
+    newShipPos = player.playerBoard.placeShip(targetShip, pos, 'ver');
+  } else if (direction === 'hor') {
+    newShipPos = player.playerBoard.placeShip(targetShip, pos, 'hor');
+  }
 
   if (newShipPos !== false) {
     removeOldShipPos(oldShipPosArray);
