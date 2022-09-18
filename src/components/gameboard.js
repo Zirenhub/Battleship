@@ -60,15 +60,29 @@ class Gameboard {
       }
     }
 
+    const tempPositions = [];
+
     if (!!checkShipExists) {
       newShip.length.forEach((pos) => {
+        tempPositions.push(pos);
         this.gameboard[pos[0]][pos[1]] = null;
-      }); // if the ship we are currently placing exists, meaning we are relocating it, then reset its position so checkProximity doesn't check for its own position
+      });
+      // if the ship we are currently placing exists, meaning we are relocating it,
+      // then reset its position so checkProximity doesn't check for its own position
+      // and push its positions to a temp array.
     }
+    // if checkPiximity returns true then we know we are placing our current ship too close to another ship, exit
     if (this.checkProximity([x, y], shipLength, direction)) {
       console.log('occupied by ship nearby (sides or top/bottom and edges)');
+      // if we tempPositions has length, meaning we failed to relocate an existing ship,
+      // then push that existing ship's positions back to the gameboard.
+      if (tempPositions.length) {
+        tempPositions.forEach((pos) => {
+          this.gameboard[pos[0]][pos[1]] = newShip.getShipName();
+        });
+      }
       return false;
-    } // if checkPiximity returns true then we know we are placing our current ship too close to another ship, exit
+    }
 
     // reset ship's length since we have it saved at variable shipLength
     // and fill the length array with this ship's position
