@@ -97,10 +97,10 @@ const createPlayerGrid = (player) => {
   playerContainer.style.gridTemplateRows = `repeat(${arrayGrid.length}, auto)`;
 };
 
-const addHoverEffect = (shipLength, e) => {
-  const length = shipLength;
+const addHoverEffect = (length, placeCell) => {
+  const shipLength = length;
 
-  const dataID = e.target.dataset.coor;
+  const dataID = placeCell.dataset.coor;
   if (dataID === undefined) {
     return;
   }
@@ -112,7 +112,7 @@ const addHoverEffect = (shipLength, e) => {
     `[data-coor='${xPos} ${yPos}']`
   );
 
-  for (let i = 0; i < length; i++) {
+  for (let i = 0; i < shipLength; i++) {
     selectedCell = playerOneContainer.querySelector(
       `[data-coor='${xPos++} ${yPos}']`
     );
@@ -125,23 +125,27 @@ const addHoverEffect = (shipLength, e) => {
   }
 };
 
-const removeHoverEffect = () => {
-  const cells = document.querySelectorAll('.cell.placing');
-  cells.forEach((cell) => {
-    cell.classList.remove('placing');
-  });
-};
-
 const playerMoveShip = (shipLength, shipPlaced, player) => {
-  const _hoverListener = (e) => {
-    addHoverEffect(shipLength, e);
+  const _placeListener = (placeCell) => {
+    const target = placeCell.target;
+    const ship = shipPlaced;
+    newShipPos(target, ship, player);
   };
 
-  const _placeListener = (e) => {
-    // let placeCell = playerOneContainer.querySelector('.cell.placing');
+  const _hoverListener = (e) => {
+    const placeCell = e.target;
+    const length = shipLength;
+    addHoverEffect(length, placeCell);
 
-    const ship = shipPlaced;
-    newShipPos(e, ship, player);
+    placeCell.addEventListener('click', _placeListener);
+  };
+
+  const removeHoverEffect = () => {
+    const cells = playerOneContainer.querySelectorAll('.cell');
+    cells.forEach((cell) => {
+      cell.classList.remove('placing');
+      cell.removeEventListener('click', _placeListener);
+    });
   };
 
   if (playerOneContainer.removeEventListeners) {
@@ -149,29 +153,13 @@ const playerMoveShip = (shipLength, shipPlaced, player) => {
   }
 
   playerOneContainer.addEventListener('mouseover', _hoverListener);
-  playerOneContainer.addEventListener('click', _placeListener);
 
   playerOneContainer.removeEventListeners = () => {
     playerOneContainer.removeEventListener('mouseover', _hoverListener);
-    playerOneContainer.removeEventListener('click', _placeListener);
   };
 
   // remove the hover effect on cells after mouseout
   playerOneContainer.addEventListener('mouseout', removeHoverEffect);
-
-  // playerOneContainer.addEventListener('mouseover', function _listener(e) {
-  //   hoverEffect(e, shipLength, 'mouseover');
-  //   let placeCell = playerOneContainer.querySelector('.cell.placing');
-  //   if (placeCell === null) {
-  //     return;
-  //   }
-  //   placeCell.addEventListener('click', function _placeShipListener(e) {
-  //     if (newShipPos(e, ship, player)) {
-  //       playerOneContainer.removeEventListener('mouseover', _listener);
-  //       placeCell.removeEventListener('click', _placeShipListener);
-  //     } // if we placed the ship in it's new location successfully, then remove the eventListeners
-  //   });
-  // });
 };
 
 const removeOldShipPos = (oldShipPosArray) => {
@@ -179,13 +167,13 @@ const removeOldShipPos = (oldShipPosArray) => {
   positionsToRemove.forEach((pos) => {
     const cell = document.querySelector(`[data-coor='${pos[0]} ${pos[1]}']`);
     cell.removeAttribute('id');
-    // const clone = cell.cloneNode(false);
-    // cell.parentNode.replaceChild(clone, cell);
+    const clone = cell.cloneNode(true);
+    cell.parentNode.replaceChild(clone, cell);
   });
 };
 
-const newShipPos = (e, ship, player) => {
-  const targetCell = e.target.dataset.coor;
+const newShipPos = (target, ship, player) => {
+  const targetCell = target.dataset.coor;
   const targetShip = ship.getShipClass();
   const pos = [Number(targetCell[0]), Number(targetCell[2])];
 
