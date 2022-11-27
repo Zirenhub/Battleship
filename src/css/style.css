@@ -16,6 +16,7 @@
 
 body {
     background-color: #f8f8f8;
+    width: 100vw;
 }
 
 h1 {
@@ -23,8 +24,11 @@ h1 {
     font-size: 3rem;
 }
 
+main {
+    width: 100%;
+}
+
 .players-container {
-    /* border: 1px solid black; */
     display: flex;
     justify-content: space-evenly;
     align-items: center;
@@ -42,6 +46,15 @@ h1 {
     border: 1px solid black;
     display: grid;
     box-shadow: var(--main-box-shadow);
+}
+
+@media only screen and (max-width: 1180px) {
+    .players-container {
+        flex-direction: column;
+    }
+    .player-two-container {
+        padding-top: 20px;
+    }
 }
 
 .cell, .cell.placing, .cell.error ,.hit, .missed {

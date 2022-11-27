@@ -201,7 +201,7 @@ const removeOldShipPos = (oldShipPosArray) => {
     cell.parentNode.replaceChild(clone, cell);
   });
   // cleaning old positions of the relocated ship, removing its id and replacing it with a node clone,
-  // to remove its eventListeners, not the best way of doing this
+  // to remove its eventListeners.
 };
 
 const newShipPos = (target, ship, player, direction) => {
